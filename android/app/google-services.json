@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1027243329443",
+    "project_id": "heroapp-flutter-mll",
+    "storage_bucket": "heroapp-flutter-mll.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027243329443:android:2f2b3fa5fa4cb7a2bd3c16",
+        "android_client_info": {
+          "package_name": "com.example.heroapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027243329443-0cde3edmq7tmkkuvsjtinspnfilnda8d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAukh56dMbo7ijVVTzXnIH8ge62oOOX6XM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027243329443-0cde3edmq7tmkkuvsjtinspnfilnda8d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

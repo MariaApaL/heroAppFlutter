@@ -1,0 +1,5 @@
+
+
+
+const contentPage = 'content/';
+
