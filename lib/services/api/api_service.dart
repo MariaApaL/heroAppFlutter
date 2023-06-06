@@ -7,9 +7,9 @@ import 'models/superhero_details_api_model.dart';
 class SuperheroApiService {
   final String baseUrl = 'https://superheroapi.com/api/10231204575760255';
 
-
   Future<SuperheroApiModel> getSuperhero(String superheroName) async {
-    final response = await http.get(Uri.parse('$baseUrl/search/$superheroName'));
+    final response =
+        await http.get(Uri.parse('$baseUrl/search/$superheroName'));
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -18,9 +18,9 @@ class SuperheroApiService {
       throw Exception('Failed to fetch superhero');
     }
   }
-  
 
-  Future<SuperheroDetailsApiModel> getSuperheroDetails(String superheroId) async {
+  Future<SuperheroDetailsApiModel> getSuperheroDetails(
+      String superheroId) async {
     final response = await http.get(Uri.parse('$baseUrl/$superheroId'));
 
     if (response.statusCode == 200) {
@@ -30,4 +30,9 @@ class SuperheroApiService {
       throw Exception('Failed to fetch superhero details');
     }
   }
+
+
+
+
+
 }

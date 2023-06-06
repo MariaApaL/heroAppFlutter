@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 class CloudFavorite {
   final String documentId;
   final String ownerUserId;
-  final List<Map<String, String>> superheroes;
+  final List<Map<String, dynamic>> superheroes;
 
   const CloudFavorite({
     required this.documentId,
@@ -15,10 +15,10 @@ class CloudFavorite {
     required this.superheroes,
   });
 
-  CloudFavorite.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+ CloudFavorite.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : documentId = snapshot.id,
         ownerUserId = snapshot.data()?['ownerUserId'] as String,
-        superheroes = List<Map<String, String>>.from(
+        superheroes = List<Map<String, dynamic>>.from(
           snapshot.data()?['superheroes'] as List<dynamic>,
         );
 

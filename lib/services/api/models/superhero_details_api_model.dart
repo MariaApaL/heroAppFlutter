@@ -1,4 +1,5 @@
 class SuperheroDetailsApiModel {
+  final String superheroId;
   final String name;
   final PowerStatsResponse powerstats;
   final SuperheroImageDetailResponse image;
@@ -7,6 +8,7 @@ class SuperheroDetailsApiModel {
   final Work work;
 
   SuperheroDetailsApiModel({
+    required this.superheroId,
     required this.name,
     required this.powerstats,
     required this.image,
@@ -17,6 +19,7 @@ class SuperheroDetailsApiModel {
 
   factory SuperheroDetailsApiModel.fromJson(Map<String, dynamic> json) {
     return SuperheroDetailsApiModel(
+      superheroId: json['id'],
       name: json['name'],
       powerstats: PowerStatsResponse.fromJson(json['powerstats']),
       image: SuperheroImageDetailResponse.fromJson(json['image']),

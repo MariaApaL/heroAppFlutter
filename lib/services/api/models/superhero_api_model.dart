@@ -5,6 +5,7 @@ class SuperheroApiModel {
     this.superheroes,
   });
 
+//Array de superheroes
    factory SuperheroApiModel.fromJson(Map<String, dynamic> json) {
     return SuperheroApiModel(
       superheroes: json['results'] != null ? List<SuperheroResponse>.from(json['results'].map((x) => SuperheroResponse.fromJson(x))) : null,
