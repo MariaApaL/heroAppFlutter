@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,45 +39,62 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             await showPasswordResetSentDialog(context);
           }
           if (state.exception != null) {
-            await showErrorDialog(context,
-                'No hemos podido enviarte el email. Vuelve a intentarlo más tarde.');
+            await showErrorDialog(
+                context, 'We could not send the email, try later.');
           }
         }
       },
       child: Scaffold(
-
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(
+              10.0, 20.0, 10.0, 0.0),
           child: Column(
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Centra el contenido verticalmente
             children: [
               const Text(
-                  'Si has olvidado tu contraseña, por favor, introduce tu email y te enviaremos un email para que puedas restablecerla.'),
+                'If you forgot your password, please introduce your email and we will send you a link to reset it.',
+              ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 autofocus: true,
                 controller: _controller,
-                decoration: const InputDecoration(
+                decoration:const InputDecoration(
                   hintText: 'Email',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color:
+                            Colors.red), // Cambia el color de la raya inferior
+                  ),
                 ),
               ),
+              const SizedBox(
+                  height:
+                      16.0), // Añade un espacio entre el TextField y el botón
               TextButton(
                 onPressed: () {
                   final email = _controller.text;
-               
                   context.read<AuthBloc>().add(
                         AuthEventForgotPassword(email: email),
                       );
                 },
-                child: const Text('Enviar email'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Color.fromARGB(255, 115, 30, 30),
+                ),
+                child: const Text('Send email'),
               ),
               TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          const AuthEventLogOut(),
-                        );
-                  },
-                  child: const Text('Volver a inicio de sesión')),
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventLogOut(),
+                      );
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Color.fromARGB(255, 115, 30, 30),
+                ),
+                child: const Text('Go back to login'),
+              ),
             ],
           ),
         ),

@@ -18,11 +18,12 @@ class RegisterHeaderWidget extends StatelessWidget {
           height: size.height * 0.2,
         ),
         Text(
-          "Forma parte de SuperheroLab",
-          style: Theme.of(context).textTheme.displaySmall,
+          "Be part of SuperheroLab",style: Theme.of(context).textTheme.displaySmall?.copyWith(
+    color:const Color.fromARGB(255, 129, 29, 22),
+  ), 
         ),
         Text(
-          "Regístrate para continuar",
+          "Create an acount to continue",
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ],

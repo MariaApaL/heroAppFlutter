@@ -32,13 +32,31 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             TextFormField(
               controller: widget.emailController,
-              enableSuggestions: false,
+             enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person_outline_outlined),
-                labelText: "Correo electrónico",
-                border: OutlineInputBorder(),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                labelStyle: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                labelText: "Email",
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: Color.fromARGB(
+                        255, 0, 0, 0), // Cambia el color de los bordes enfocados aquí
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 10.0),
@@ -48,18 +66,35 @@ class _LoginFormState extends State<LoginForm> {
               enableSuggestions: false,
               autocorrect: false,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.fingerprint),
-                labelText: "Contraseña",
-                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(
+                  Icons.fingerprint,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                labelStyle: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                labelText: "Password",
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: Color.fromARGB(
+                        255, 0, 0, 0), // Cambia el color de los bordes enfocados aquí
+                  ),
+                ),
                 suffixIcon: IconButton(
                   onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
+                    _obscureText = !_obscureText;
                   },
                   icon: _obscureText
                       ? const Icon(Icons.remove_red_eye_outlined)
                       : const Icon(Icons.remove_red_eye_sharp),
+                  color: const Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
             ),
@@ -70,7 +105,11 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthEventForgotPassword());
                 },
-                child: const Text("¿Olvidaste tu contraseña?"),
+                 style: TextButton.styleFrom(
+                    foregroundColor:
+                        const Color.fromARGB(255, 0, 0, 0), // Cambia el color del texto del TextButton aquí
+                  ),
+                child: const Text("Forgot Password?"),
               ),
             ),
             SizedBox(
@@ -86,19 +125,26 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       );
                 },
-                child: const Text("INICIA SESIÓN"),
+                 style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromARGB(255, 128, 27, 27), // Cambia el color de fondo del ElevatedButton aquí
+                ),
+                child: const Text("LOGIN"),
               ),
             ),
             const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("¿No tienes una cuenta?"),
+                const Text("Don't you have an account yet?"),
                 TextButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(const AuthEventShouldRegister());
                   },
-                  child: const Text("Regístrate"),
+                   style: TextButton.styleFrom(
+                    foregroundColor:
+                        const Color.fromARGB(255, 0, 0, 0), ),
+                  child: const Text("Sign Up"),
                 ),
               ],
             ),

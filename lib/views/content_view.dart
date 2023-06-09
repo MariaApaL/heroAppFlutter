@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -12,9 +11,6 @@ import '../services/auth/bloc/auth_event.dart';
 
 import 'package:heroapp/views/content/profile_view.dart';
 import 'package:heroapp/views/content/search_view.dart';
-
-
-
 
 class ContentView extends StatefulWidget {
   const ContentView({super.key});
@@ -41,11 +37,9 @@ class BottomNavigationBarExample extends StatefulWidget {
 }
 
 class _BottomNavigationBarExampleState
-
     extends State<BottomNavigationBarExample> {
-      
   int _selectedIndex = 0;
-  
+
   static const List<Widget> _views = <Widget>[
     ProfileView(),
     SearchView(),
@@ -58,10 +52,11 @@ class _BottomNavigationBarExampleState
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-   
+ @override
+Widget build(BuildContext context) {
+  return Container(
+    color: Colors.red, // Establecer el color de fondo rojo
+    child: Scaffold(
       body: Center(
         child: _views.elementAt(_selectedIndex),
       ),
@@ -81,40 +76,10 @@ class _BottomNavigationBarExampleState
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 120, 13, 13),
+        selectedItemColor:const Color.fromARGB(255, 179, 16, 16),
         onTap: _onItemTapped,
       ),
-    );
-  }
+    ),
+  );
 }
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Sign out'),
-        content: const Text('Are you sure you want to sign out?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-              // Redirige a la vista de inicio de sesión
-             context.read<AuthBloc>().add(
-                          const AuthEventLogOut(),
-                        
-              );
-            },
-            child: const Text('Log out'),
-          ),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
-}
+    }

@@ -16,27 +16,38 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify Email')),
-      body: Column(children: [
-        const Text(
-            "We've sent you an email verification. Please, open tu verify your account."),
-        const Text(
-            "If you haven't received your verification email yet, press your button below"),
-        TextButton(
+      appBar: AppBar(
+        title: const Text('Verify Email'),
+        backgroundColor: Color.fromARGB(255, 160, 36, 27), // Cambiar el color de la AppBar
+      ),
+      body: Column(
+        children: [
+          const Text(
+              "We've sent you an email verification. Please, open tu verify your account."),
+          const Text(
+              "If you haven't received your verification email yet, press your button below"),
+          TextButton(
             onPressed: () {
               context
                   .read<AuthBloc>()
                   .add(const AuthEventSendEmailVerification());
             },
-            child: const Text("Send email verification.")),
-        TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 155, 45, 37), // Cambiar el color del TextButton
+            ),
+            child: const Text("Send email verification."),
+          ),
+          TextButton(
             onPressed: () async {
-              context
-                  .read<AuthBloc>()
-                  .add(const AuthEventLogOut());
+              context.read<AuthBloc>().add(const AuthEventLogOut());
             },
-            child: const Text("Restart"))
-      ]),
+            style: TextButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 121, 39, 33), // Cambiar el color del TextButton
+            ),
+            child: const Text("Restart"),
+          ),
+        ],
+      ),
     );
   }
 }

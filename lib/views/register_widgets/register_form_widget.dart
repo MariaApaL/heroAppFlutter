@@ -68,7 +68,7 @@ class RegisterFormWidget extends StatelessWidget {
                 labelStyle: const TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
                 ),
-                labelText: "Contraseña",
+                labelText: "Password",
                 border: const OutlineInputBorder(
                   borderSide: BorderSide(
                     width: 2.0,
@@ -107,10 +107,10 @@ class RegisterFormWidget extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      const Color.fromARGB(255, 0, 0, 0), // Cambia el color de fondo del ElevatedButton aquí
+                      Color.fromARGB(255, 128, 29, 29), // Cambia el color de fondo del ElevatedButton aquí
                 ),
                 child: const Text(
-                  "REGISTRARSE",
+                  "SIGN UP",
                   style: TextStyle(
                     color: Color.fromARGB(255, 255, 255, 255),
                   ),
@@ -120,7 +120,7 @@ class RegisterFormWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("¿Ya tienes cuenta?"),
+                const Text("Already have an account?"),
                 TextButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(const AuthEventLogOut());
@@ -129,7 +129,7 @@ class RegisterFormWidget extends StatelessWidget {
                     foregroundColor:
                         const Color.fromARGB(255, 0, 0, 0), // Cambia el color del texto del TextButton aquí
                   ),
-                  child: const Text("Inicia Sesión"),
+                  child: const Text("Login"),
                 ),
               ],
             ),

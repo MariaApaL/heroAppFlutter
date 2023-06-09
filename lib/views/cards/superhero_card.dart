@@ -84,33 +84,39 @@ class _SuperheroCardState extends State<SuperheroCard> {
     });
   }
 
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                DetailsView(superheroId: widget.superhero.superheroId),
+    int _current = 0;
+
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+            color:const Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.circular(20.0),
+            border: Border.all(
+              color:const Color.fromARGB(255, 132, 114, 114),
+              width: 2.0,
+            ),
           ),
-        );
-      },
-      child: SizedBox(
-        // Establece la altura deseada para la tarjeta
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          elevation: 10.0,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 60.0),
-            child: Container(
-              padding: const EdgeInsets.all(30.0),
+          child: SingleChildScrollView(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsView(
+                      superheroId: widget.superhero.superheroId.toString(),
+                    ),
+                  ),
+                );
+              },
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: [
                   Container(
-                    padding: const EdgeInsets.all(40.0),
+                    height: 320,
+                    margin: const EdgeInsets.only(top: 30),
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -120,42 +126,53 @@ class _SuperheroCardState extends State<SuperheroCard> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 5),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Text(
-                          widget.superhero.name,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : Colors.black,
-                        ),
-                        onPressed: () {
-                          if (isFavorite) {
-                            _deleteFavorite();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Superhero removed from favorites!'),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.superhero.name,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
-                          } else {
-                            _saveFavorite();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Superhero added to favorites!'),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : Colors.black,
                               ),
-                            );
-                          }
-                        },
+                              onPressed: () {
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                });
+
+                                if (isFavorite) {
+                                  _saveFavorite();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Superhero added to favorites!'),
+                                    ),
+                                  );
+                                } else {
+                                  _deleteFavorite();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Superhero removed from favorites!'),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -163,8 +180,8 @@ class _SuperheroCardState extends State<SuperheroCard> {
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

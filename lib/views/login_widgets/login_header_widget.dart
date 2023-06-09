@@ -16,12 +16,14 @@ const LoginHeaderWidget({Key? key, required this.size}) : super(key: key);
           image: const AssetImage("assets/images/welcome.png"),
           height: size.height * 0.2,
         ),
+      Text(
+  "Welcome to SuperheroLab",
+  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+    color: const Color.fromARGB(255, 133, 35, 28),
+  ),
+),
         Text(
-          "Bienvenido a SuperheroLab",
-          style: Theme.of(context).textTheme.displaySmall,
-        ),
-        Text(
-          "Inicia sesión para continuar",
+          "Login to continue",
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ],

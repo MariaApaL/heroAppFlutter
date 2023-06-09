@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -23,6 +24,8 @@ class _FavoritesViewState extends State<FavoritesView> {
   bool _isLoading = true;
   List<Map<String, dynamic>> _superheroes = [];
   List<Map<String, dynamic>> _filteredSuperheroes = [];
+  int _current = 0;
+  CarouselController _carouselController = CarouselController();
 
   @override
   void initState() {
@@ -75,68 +78,107 @@ class _FavoritesViewState extends State<FavoritesView> {
     });
   }
 
-void _handleFavoriteRemoved(String superheroId) {
-  setState(() {
-    _filteredSuperheroes = _filteredSuperheroes.where((superhero) =>
-        superhero['superheroId'] != superheroId).toList();
-  });
-}
+  void _handleFavoriteRemoved(String superheroId) {
+    setState(() {
+      _filteredSuperheroes = _filteredSuperheroes
+          .where((superhero) => superhero['superheroId'] != superheroId)
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Superhero Search'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search by superhero name',
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/4814395.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              onChanged: _searchSuperheroes,
             ),
-          ),
-          Expanded(
-            child: Visibility(
-              visible: !_isLoading,
-              replacement: Center(
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('No superheroes found'),
+            Positioned(
+              top: 80,
+              left: 0,
+              right: 0,
+              bottom: -100,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.grey.shade50.withOpacity(1),
+                      Colors.grey.shade50.withOpacity(1),
+                      Colors.grey.shade50.withOpacity(1),
+                      Colors.grey.shade50.withOpacity(1),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                    ],
+                  ),
+                ),
               ),
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  final superhero = _filteredSuperheroes[index];
-                  final superheroId = superhero['superheroId'] as String?;
-                  final name = superhero['name'] as String?;
-                  final superheroImage =
-                      superhero['superheroImage'] as Map<String, dynamic>?;
+            ),
+            Positioned(
+              bottom: -70,
+              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width,
+              child: Visibility(
+                visible: !_isLoading,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: _superheroes.isNotEmpty
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 410.0,
+                          aspectRatio: 10 / 9,
+                          viewportFraction: 0.70,
+                          enlargeCenterPage: true,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _current = index;
+                            });
+                          },
+                        ),
+                        carouselController: _carouselController,
+                        items: _filteredSuperheroes.map((superhero) {
+                          final superheroId =
+                              superhero['superheroId'] as String?;
+                          final name = superhero['name'] as String?;
+                          final superheroImage = superhero['superheroImage']
+                              as Map<String, dynamic>?;
 
-                  if (superheroId != null &&
-                      name != null &&
-                      superheroImage != null) {
-                    return SuperheroCard(
-                      superhero: SuperheroResponse(
-                        superheroId: superheroId,
-                        name: name,
-                        superheroImage:
-                            SuperheroImageResponse.fromJson(superheroImage),
-                      ),
-                      onFavoriteRemoved: () => _handleFavoriteRemoved(
-                          superheroId), // Pass the superheroId to the callback
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
+                          if (superheroId != null &&
+                              name != null &&
+                              superheroImage != null) {
+                            return SuperheroCard(
+                              superhero: SuperheroResponse(
+                                superheroId: superheroId,
+                                name: name,
+                                superheroImage: SuperheroImageResponse.fromJson(
+                                    superheroImage),
+                              ),
+                              onFavoriteRemoved: () =>
+                                  _handleFavoriteRemoved(superheroId),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }).toList(),
+                      )
+                    : Container(),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -4,46 +4,62 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../enums/menu_action.dart';
+import '../../services/auth/auth_service.dart';
 import '../../services/auth/bloc/auth_bloc.dart';
 import '../../services/auth/bloc/auth_event.dart';
 import '../../utilities/dialogs/logout_dialog.dart';
 
-class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
+class ProfileView extends StatelessWidget {
+  const ProfileView({Key? key}) : super(key: key);
 
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
+  void _signOut(BuildContext context) async {
+    final shouldLogout = await showLogOutDialog(context);
+    if (shouldLogout) {
+      context.read<AuthBloc>().add(const AuthEventLogOut());
+    }
+  }
 
-class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      title: const Text('Profile'),
-      actions: [
-        PopupMenuButton<MenuAction>(
-          onSelected: (value) async {
-            switch (value) {
-              case MenuAction.logout:
-                final shouldLogout = await showLogOutDialog(context);
-                if (shouldLogout) {
-                  context.read<AuthBloc>().add(
-                        const AuthEventLogOut(),
-                      );
-                }
-            }
-          },
-          itemBuilder: (context) {
-            return const [
-              PopupMenuItem<MenuAction>(
-                value: MenuAction.logout,
-                child: Text('Log out'),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/superhero.png', 
+                width: 200, 
+                height: 200, 
               ),
-            ];
-          },
-        )
-      ],
-    ));
+              const SizedBox(height: 16.0),
+              const Text(
+                'Welcome!',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () => _signOut(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 138, 31, 24),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Text(
+                    'Log out',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

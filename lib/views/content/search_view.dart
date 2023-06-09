@@ -32,7 +32,8 @@ class _SearchViewState extends State<SearchView> {
         // Llama a la API y obtiene la lista de superhéroes que coinciden con la consulta
         SuperheroApiModel superheroData = await _apiService.getSuperhero(query);
         setState(() {
-          _superheroes = superheroData.superheroes ?? []; // Actualiza la lista de superhéroes encontrados
+          _superheroes = superheroData.superheroes ??
+              []; // Actualiza la lista de superhéroes encontrados
         });
       } catch (e) {
         print(e);
@@ -43,7 +44,8 @@ class _SearchViewState extends State<SearchView> {
       }
     } else {
       setState(() {
-        _superheroes = []; // Vacía la lista de superhéroes si la consulta está vacía
+        _superheroes =
+            []; // Vacía la lista de superhéroes si la consulta está vacía
       });
     }
   }
@@ -51,147 +53,112 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
-    _searchSuperheroes("a"); // Realiza una búsqueda inicial con una consulta predeterminada
+    _searchSuperheroes(
+        "a"); // Realiza una búsqueda inicial con una consulta predeterminada
   }
 
   @override
   Widget build(BuildContext context) {
+    SuperheroResponse? superhero =
+        _superheroes.isNotEmpty ? _superheroes[_current] : null;
     return Scaffold(
-    
-
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _searchSuperheroes,
-              decoration: const InputDecoration(
-                labelText: 'Search by superhero name',
-              ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.095,
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: superhero != null
+                  ? Image.network(superhero.superheroImage.url,
+                      fit: BoxFit.cover)
+                  : Container(),
             ),
-          ),
-          Visibility(
-            visible: !_isLoading, // Verifica si la búsqueda está en curso para mostrar u ocultar el CircularProgressIndicator
-            replacement: const Center(
-              child: CircularProgressIndicator(),
-            ),
-            child: Expanded(
-              child: CarouselSlider.builder(
-                itemCount: _superheroes.length,
-                itemBuilder: (BuildContext context, int index, int realIndex) {
-                  SuperheroResponse superhero = _superheroes[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(superhero.superheroImage.url),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: SuperheroCard(
-                      superhero: superhero,
-                      onFavoriteRemoved: () {},
-                    ),
-                  );
-                },
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.70,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
+            Positioned(
+              top: 80,
+              left: 0,
+              right: 0,
+              bottom: -100,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Color.fromARGB(255, 223, 80, 80).withOpacity(1),
+                      Color.fromARGB(255, 161, 24, 24).withOpacity(1),
+                      Color.fromARGB(255, 243, 112, 112).withOpacity(1),
+                      Colors.grey.shade50.withOpacity(1),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                      Colors.grey.shade50.withOpacity(0.0),
+                    ],
+                  ),
                 ),
-                carouselController: _carouselController,
               ),
             ),
-          ),
-        ],
+ Positioned(
+  top: 30,
+  left: 0,
+  right: 0,
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    child: TextField(
+      controller: _searchController,
+      onChanged: (query) {
+        _searchSuperheroes(query);
+      },
+      decoration: const InputDecoration(
+        hintText: 'Search Superheroes',
+        prefixIcon:  Icon(
+          Icons.search,
+          color: Color.fromARGB(255, 130, 26, 18),
+        ),
+      
+      ),
+    ),
+  ),
+),
+            Positioned(
+              bottom: -70,
+              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width,
+              child: Visibility(
+                visible: !_isLoading,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: _superheroes.isNotEmpty
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 410.0,
+                          aspectRatio: 10 / 9,
+                          viewportFraction: 0.70,
+                          enlargeCenterPage: true,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _current = index;
+                            });
+                          },
+                        ),
+                        carouselController: _carouselController,
+                        items: _superheroes.map((superhero) {
+                          return SuperheroCard(
+                            superhero: superhero,
+                            onFavoriteRemoved: () {},
+                          );
+                        }).toList(),
+                      )
+                    : Container(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-// class _SearchViewState extends State<SearchView> {
-//   final TextEditingController _searchController = TextEditingController();
-//   final SuperheroApiService _apiService = SuperheroApiService();
-//   bool _isLoading = false;
-//   List<SuperheroResponse> _superheroes = [];
-
-//   void _searchSuperheroes(String query) async {
-//     if (query.isNotEmpty) { 
-//       setState(() {
-//         _isLoading = true; 
-//       });
-
-//       try {
-//         // Llama a la api y obtiene la lista de superhéroes que coinciden con la consulta
-//         SuperheroApiModel superheroData = await _apiService.getSuperhero(query);
-//         setState(() {
-//           _superheroes = superheroData.superheroes ?? []; // Actualiza la lista de superhéroes encontrados
-//         });
-//       } catch (e) {
-//         print(e);
-//       } finally {
-//         setState(() {
-//           _isLoading = false; 
-//         });
-//       }
-//     } else {
-//       setState(() {
-//         _superheroes = []; // Vacía la lista de superhéroes si la consulta está vacía
-//       });
-//     }
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _searchSuperheroes("a"); // Realiza una búsqueda inicial con una consulta predeterminada
-//   }
-
-//     @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Superhero Search'),
-//       ),
-//       body: Container(
-//         child: Stack(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: TextField(
-//               controller: _searchController,
-//               onChanged: _searchSuperheroes,
-//               decoration: const InputDecoration(
-//                 labelText: 'Search by superhero name',
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: Visibility(
-//               visible: !_isLoading, // Verifica si la búsqueda está en curso para mostrar u ocultar el CircularProgressIndicator
-//               replacement: const Center(
-//                 child: CircularProgressIndicator(),
-//               ),
-//               child: ListView.builder(
-//                 itemCount: _superheroes.length, // Número de elementos en la lista de superhéroes
-//                 itemBuilder: (context, index) {
-//                   SuperheroResponse superhero = _superheroes[index]; // Obtiene el superhéroe correspondiente al índice actual
-//                   return SuperheroCard(superhero: superhero,
-//                   onFavoriteRemoved: () {},); // Crea un widget SuperheroCard para mostrar la información del superhéroe
-//                 },
-//               ),
-//             ),
-//           ),
-      
-//         ],
-      
-//       ),
-//       ),
-//     );
-//   }
-// }
